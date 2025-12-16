@@ -1,130 +1,162 @@
-Praktikum 11 – PHP OOP
+# 📘 Praktikum 11 & 12 – Pemrograman Web (PHP OOP)
 
-Nama    : Rizky Maulana
+Repository ini berisi hasil pengerjaan **Praktikum 11 dan Praktikum 12** mata kuliah **Pemrograman Web** Universitas Pelita Bangsa.
 
-Kelas   : TI.24.A.3
+---
 
-Nim     : 312410430
+## 👤 Identitas Mahasiswa
 
-# Nama Praktikum
+* **Nama** : Rizky Maulana
+* **NIM** : (312410430)
+* **Mata Kuliah** : Pemrograman Web
+* **Dosen Pengampu** : Agung Nugroho, S.Kom., M.Kom.
+* **Universitas** : Universitas Pelita Bangsa
 
-Praktikum 11 – PHP OOP Lanjutan
-Membangun mini-framework PHP dengan konsep Modular, OOP, dan Routing.
+---
 
+## 🧪 Praktikum 11 – PHP OOP Lanjutan (Framework Modular & Routing)
 
-# Penjelasan Tiap Folder & File
-1. .htaccess
+### 🎯 Tujuan Praktikum
 
-File yang mengaktifkan fitur routing menggunakan mod_rewrite Apache.
-URL menjadi lebih rapi seperti:
+1. Memahami konsep dasar framework modular.
+2. Memahami konsep dasar routing pada PHP.
+3. Mampu membuat framework sederhana menggunakan PHP berbasis OOP.
 
-- localhost/lab11_php_oop/artikel/tambah
+---
 
-2. index.php (Router Utama)
+### 📂 Struktur Folder
 
-File paling penting yang membaca URL dan menentukan modul apa yang ditampilkan.
-Contoh:
+```
+lab11_php_oop/
+├── .htaccess
+├── config.php
+├── index.php
+├── class/
+│   ├── Database.php
+│   └── Form.php
+├── module/
+│   └── artikel/
+│       ├── index.php
+│       ├── tambah.php
+│       └── ubah.php
+├── template/
+│   ├── header.php
+│   ├── footer.php
+│   └── sidebar.php
+```
 
-- /artikel/index  →  module/artikel/index.php
-- /artikel/tambah →  module/artikel/tambah.php
+---
 
-3. Folder class/
+### ⚙️ Penjelasan Singkat
 
-Berisi class OOP:
+* **index.php** → Bertindak sebagai router utama aplikasi
+* **.htaccess** → Digunakan untuk URL rewriting
+* **class/** → Berisi class Database dan Form berbasis OOP
+* **module/** → Berisi modul aplikasi (artikel)
+* **template/** → Berisi layout header dan footer
 
-File	Fungsi
-Database.php	class untuk koneksi database, insert, update
-Form.php	class untuk membuat form input dinamis (text, select, radio, dll.)
+---
 
-4. Folder module/
+### 🌐 Contoh Routing
 
-Semua fitur aplikasi diletakkan di dalam modul.
-Pada tugas ini, modul artikel dibuat dengan 4 halaman:
-
-File	Fungsi
-
-index.php	menampilkan daftar artikel
-
-tambah.php	form tambah artikel
-
-simpan.php	proses menyimpan ke database
-
-ubah.php	mengedit artikel
-
-5. Folder template/
-
-Berisi layout:
-
-File	Fungsi
-
-header.php	header HTML
-
-footer.php	footer HTML
-
-sidebar.php	menu navigasi modul
-
-# Langkah Praktikum
-1. Membuat struktur folder
-
-Membuat folder lab11_php_oop beserta subfolder: class, module, template.
-
-2. Memindahkan class Form & Database
-
-Class dari praktikum sebelumnya ditempatkan pada folder class/.
-
-3. Membuat file config.php
-
-Berisi konfigurasi database:
-
-$config = [
-    'host' => 'localhost',
-    'username' => 'root',
-    'password' => '',
-    'db_name' => 'db_praktikum11'
-];
-
-4. Membuat file .htaccess untuk routing
-
-Mengaktifkan URL rewriting agar router berjalan.
-
-5. Membuat router utama pada index.php
-
-Router membaca URL dan memanggil modul yang sesuai.
-
-6. Membuat modul artikel
-
-Berisi halaman untuk:
-
-melihat artikel
-
-menambah artikel
-
-menyimpan artikel
-
-mengubah artikel
-
-7. Membuat template (header, footer, sidebar)
-
-Template digunakan agar tampilan rapi dan seragam.
-
-8. Menjalankan project
-
-Buka di browser:
-
-http://localhost/lab11_php_oop/implementasi.php
-
+```
 http://localhost/lab11_php_oop/artikel/index
+```
 
-✔️ Kesimpulan
+Routing ini akan otomatis diarahkan oleh `.htaccess` ke `index.php` lalu ke modul yang sesuai.
 
-Pada Praktikum 11 ini, saya telah mempelajari:
+---
 
-Cara membuat mini-framework PHP
+### 📸 Hasil Praktikum 11
 
-Cara membuat routing URL tanpa query string
+* Struktur folder berhasil dibuat
+* Routing berjalan dengan baik
+* Modul artikel dapat diakses
 
-Cara membangun modul halaman
+*(Tambahkan screenshot hasil di sini)*
 
-Cara menggunakan OOP untuk form dinamis dan database
+---
 
-Cara memisahkan template, class, dan modul agar lebih rapi
+## 🔐 Praktikum 12 – Autentikasi & Session
+
+### 🎯 Tujuan Praktikum
+
+1. Memahami konsep autentikasi (login & logout).
+2. Memahami penggunaan session pada PHP.
+3. Mengamankan halaman dengan autentikasi.
+
+---
+
+### 🗄️ Persiapan Database
+
+Membuat tabel `users` pada database `latihan_oop`:
+
+```sql
+CREATE TABLE users (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    username VARCHAR(50) NOT NULL,
+    password VARCHAR(255) NOT NULL,
+    nama VARCHAR(100)
+);
+```
+
+Insert user admin:
+
+```sql
+INSERT INTO users (username, password, nama)
+VALUES ('admin', '<hash_password>', 'Administrator');
+```
+
+Password dienkripsi menggunakan fungsi `password_hash()`.
+
+---
+
+### 🔑 Fitur Autentikasi
+
+* Login menggunakan username dan password
+* Password diverifikasi menggunakan `password_verify()`
+* Session digunakan untuk menyimpan status login
+* Halaman tertentu dilindungi (tidak bisa diakses tanpa login)
+
+---
+
+### 👤 Modul User
+
+* `login.php` → Halaman login
+* `logout.php` → Menghapus session dan logout
+* `profile.php` → Menampilkan data user dan ubah password
+
+---
+
+### 🧠 Proteksi Halaman
+
+Jika user belum login dan mencoba mengakses halaman admin/artikel, maka otomatis diarahkan ke halaman login.
+
+---
+
+### 🧪 Pengujian
+
+1. Akses halaman artikel tanpa login → redirect ke login
+2. Login dengan akun admin
+3. Berhasil masuk ke halaman artikel
+4. Mengakses profil user
+5. Logout berhasil
+
+*(Tambahkan screenshot pengujian di sini)*
+
+---
+
+## ✅ Kesimpulan
+
+Dari Praktikum 11 dan 12 ini, dapat disimpulkan bahwa:
+
+* Framework sederhana berbasis PHP OOP berhasil dibuat
+* Konsep routing dan modularisasi dapat diterapkan dengan baik
+* Autentikasi dan session berhasil diimplementasikan
+* Aplikasi menjadi lebih aman dan terstruktur
+
+---
+
+## 📌 Catatan
+
+Repository ini dibuat untuk memenuhi tugas **Praktikum 11 dan 12 Pemrograman Web**.
